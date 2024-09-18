@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DUCKS App</title>
+    <!-- Мета-тег для адаптивности -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Подключение шрифтов */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap');
+
+        /* Сброс стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Общие стили */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FAFAFA; /* Светлый фон */
+            color: #212121; /* Тёмный текст */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding-bottom: 80px; /* Отступ для нижней навигации */
+            background-color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        /* Заголовок */
+        .header {
+            font-size: 32px;
+            font-weight: 500;
+            padding: 20px;
+            text-align: center;
+            background-color: #FFFFFF;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        /* Иконка на главной */
+        .icon {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .icon img {
+            width: 100px;
+            height: auto;
+        }
+
+        /* Секция задач */
+        .tasks-section {
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .tasks-section h2 {
+            font-size: 24px;
+            color: #000;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .task .task-info {
+            text-align: left;
+            max-width: 70%;
+        }
+
+        .task .task-info p {
+            margin: 5px 0;
+        }
+
+        .task .task-info p:first-child {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .task .task-info p:last-child {
+            font-size: 14px;
+            color: #757575;
+        }
+
+        .task button {
+            padding: 8px 16px;
+            border: 1px solid #000;
+            background-color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 80px;
+            transition: all 0.3s;
+        }
+
+        .task button:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Кнопка "Show more tasks" */
+        .show-more {
+            text-align: left;
+            margin: 15px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            user-select: none;
+            color: #000; /* Цвет текста чёрный */
+        }
+
+        .show-more-icon {
+            margin-left: auto;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.3s;
+            color: #000; /* Цвет иконки чёрный */
+        }
+
+        .new-quests {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        /* Навигационное меню */
+        .nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #FFFFFF;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #E0E0E0;
+        }
+
+        .nav a {
+            color: #555;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav a.active {
+            color: #000;
+        }
+
+        .nav a .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav a .nav-icon img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Стили для вкладки "Get HOT's" */
+        .get-hots-container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px;
+            text-align: center;
+            background-color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .get-hots-container .title-screen {
+            font-size: 24px;
+            font-weight: 500;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #212121;
+        }
+
+        .get-hots-container .title-screen img {
+            width: 24px; /* Ширина 24px */
+            height: 28px; /* Высота 28px */
+            margin-right: 10px;
+        }
+
+        .get-hots-container .description {
+            font-size: 16px;
+            color: #666;
+            margin: 20px;
+            line-height: 1.5;
+        }
+
+        .get-hots-container .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            background-color: #000;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .get-hots-container .btn:hover {
+            background-color: #333;
+        }
+
+        .get-hots-container .faq-section {
+            text-align: left;
+            margin: 0 20px;
+        }
+
+        .get-hots-container .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .get-hots-container .faq-question {
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            user-select: none;
+            color: #000; /* Цвет текста чёрный */
+        }
+
+        .faq-icon {
+            margin-left: auto;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.3s;
+            color: #000; /* Цвет иконки чёрный */
+        }
+
+        .get-hots-container .faq-answer {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 15px;
+            color: #333;
+            margin-top: 10px;
+            display: none;
+            line-height: 1.6;
+            padding: 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            background-color: #F5F5F5;
+        }
+
+        /* Стили для вкладки "Leaderboard" */
+        .leaderboard-container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px;
+            text-align: center;
+            background-color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .leaderboard-container .coming-soon {
+            font-size: 28px;
+            font-weight: 500;
+            margin-top: 40px;
+            color: #212121;
+
+        }
+
+        /* Адаптивная верстка */
+        @media only screen and (max-width: 600px) {
+            .container, .get-hots-container, .leaderboard-container {
+                width: 100%;
+            }
+
+            .header, .get-hots-container .title-screen, .leaderboard-container .coming-soon {
+                font-size: 24px;
+            }
+
+            .tasks-section h2 {
+                font-size: 22px;
+            }
+
+            .task {
+                padding: 10px 0;
+            }
+
+            .task .task-info {
+                max-width: 65%;
+            }
+
+            .task .task-info p:first-child {
+                font-size: 15px;
+            }
+
+            .task .task-info p:last-child {
+                font-size: 13px;
+            }
+
+            .task button {
+                padding: 6px 12px;
+                font-size: 13px;
+                min-width: 70px;
+            }
+
+            .get-hots-container .description {
+                font-size: 15px;
+                margin: 15px;
+            }
+
+            .get-hots-container .btn {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+
+            .get-hots-container .faq-question {
+                font-size: 15px;
+            }
+
+            .get-hots-container .faq-answer {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Главное меню (Home) -->
+    <div class="container" id="home">
+        <div class="header">
+            <span id="ducks-amount">0</span> $DUCKS
+        </div>
+        <div class="icon">
+            <!-- Логотип приложения -->
+            <img src="duck-logo.png" alt="Логотип утки">
+        </div>
+
+        <div class="tasks-section">
+            <h2>Tasks</h2>
+
+            <ul class="task-list" id="task-list">
+                <!-- Задачи будут добавлены здесь через JavaScript -->
+            </ul>
+
+            <div class="show-more" onclick="toggleMoreTasks()">
+                <span id="show-more-text">Show more tasks</span>
+                <span id="show-more-icon" class="show-more-icon">+</span>
+            </div>
+
+            <div class="new-quests">New quests coming soon</div>
+        </div>
+    </div>
+
+    <!-- Вкладка "Get HOT's" -->
+    <div class="get-hots-container" id="get-hots" style="display:none;">
+        <div class="title-screen">
+            <!-- Иконка огня -->
+            <img src="fire.png" alt="Иконка огня">
+            <span id="hots-available"> 0 </span>. HOT'S AVAILABLE
+        </div>
+
+        <p class="description">Withdraw your HOT's directly to Here Wallet now. Connect your wallet and get HOT and a free roulette spin.</p>
+
+        <button class="btn" onclick="location.href='hotwallet/index.html'">Connect wallet</button>
+
+        <div class="faq-section">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaqAnswer(this)">
+                    <span>Why can't I get my HOT's out?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    To withdraw your winnings in HOT or NEAR you need to connect your wallet and confirm the withdrawal in the Here Wallet app itself. Check the connection of the wallet. Also, try to invite a few friends with Here Wallet to unblock the withdrawal, your friends and you will receive HOT to your wallet anyway.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вкладка "Leaderboard" -->
+    <div class="leaderboard-container" id="leaderboard" style="display:none;">
+        <div class="coming-soon">COMING SOON</div>
+        <div class="icon">
+            <!-- Логотип приложения -->
+            <img src="duck-logo.png" alt="Логотип утки">
+        </div>
+    </div>
+
+    <!-- Навигационное меню -->
+    <div class="nav">
+        <a href="#" onclick="showTab('home')" id="nav-home" class="active">
+            <div class="nav-icon">
+                <img src="home.png" alt="Home">
+            </div>
+            <div>Home</div>
+        </a>
+
+        <a href="#" onclick="showTab('leaderboard')" id="nav-leaderboard">
+            <div class="nav-icon">
+                <img src="leaderboard.png" alt="Leaderboard">
+            </div>
+            <div>Leaderboard</div>
+        </a>
+        <a href="#" onclick="showTab('get-hots')" id="nav-get-hots">
+            <div class="nav-icon">
+                <img src="get-hots.png" alt="Get HOT's">
+            </div>
+            <div>Get HOT's</div>
+        </a>
+    </div>
+
+    <script>
+        // Переменные для $DUCKS и HOT
+        var ducksAmount = 0;
+        var hotsAmount = 0;
+
+        // Массив с данными задач
+        var tasks = [
+            // Первые 3 задачи
+            {
+                title: "Join the community",
+                reward: "+400 $DUCKS and +3 HOT",
+                action: "Open",
+                url: "https://t.me/ducksproject",
+                completed: false
+            },
+            {
+                title: "Join Durov's channel",
+                reward: "+600 $DUCKS and +2 HOT",
+                action: "Open",
+                url: "https://t.me/durov",
+                completed: false
+            },
+            {
+                title: "Join notcoin's channel",
+                reward: "+600 $DUCKS and +2 HOT",
+                action: "Open",
+                url: "https://t.me/notcoin",
+                completed: false
+            },
+            // Дополнительные задачи, которые появляются после "Show more tasks"
+            {
+                title: "Connect Hot Wallet",
+                reward: "+1500 $DUCKS and +6 HOT",
+                action: "Connect",
+                url: "",
+                completed: false
+            },
+            {
+                title: "Join the Hot Wallet community",
+                reward: "+600 $DUCKS and +2 HOT",
+                action: "Open",
+                url: "https://t.me/hotonnear",
+                completed: false
+            },
+            {
+                title: "Invite your friends",
+                reward: "+400 $DUCKS and +3 HOT",
+                action: "Invite",
+                url: "",
+                completed: false,
+                friendsInvited: 0, // Счётчик приглашённых друзей
+                maxInvites: 10 // Максимальное количество приглашений
+            }
+        ];
+
+        // Флаг для отслеживания, показаны ли дополнительные задачи
+        var moreTasksShown = false;
+
+        // Функция для отображения задач
+        function renderTasks() {
+            var taskList = document.getElementById('task-list');
+            taskList.innerHTML = ''; // Очищаем список задач
+
+            var tasksToShow = moreTasksShown ? tasks : tasks.slice(0, 3);
+
+            tasksToShow.forEach(function(task, index) {
+                var taskItem = document.createElement('li');
+                taskItem.className = 'task';
+
+                var taskInfo = document.createElement('div');
+                taskInfo.className = 'task-info';
+
+                var title = document.createElement('p');
+                title.textContent = task.title;
+
+                var reward = document.createElement('p');
+
+                // Если это задача "Invite your friends", добавляем счётчик
+                if (task.title === "Invite your friends") {
+                    reward.textContent = task.reward + ` (${task.friendsInvited}/${task.maxInvites})`;
+                } else {
+                    reward.textContent = task.reward;
+                }
+
+                taskInfo.appendChild(title);
+                taskInfo.appendChild(reward);
+
+                var button = document.createElement('button');
+                button.textContent = task.completed ? 'Completed' : task.action;
+                button.disabled = task.completed;
+                button.onclick = function() {
+                    handleTaskAction(task, index);
+                };
+
+                taskItem.appendChild(taskInfo);
+                taskItem.appendChild(button);
+
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        // Функция для обработки действия по задаче
+
+        function handleTaskAction(task, index) {
+            if (task.completed) return;
+
+            // Открываем ссылку, если она есть
+            if (task.url) {
+                window.open(task.url, '_blank');
+            }
+
+            // Специальные действия для определённых задач
+            if (task.title === "Connect Hot Wallet") {
+                showTab('get-hots');
+                updateNavActive('nav-get-hots');
+                return;
+            }
+
+            if (task.title === "Invite your friends") {
+                // Генерируем кастомную ссылку (для примера)
+                var inviteLink = 'https://example.com/invite?user=12345';
+                alert('Your invite link: ' + inviteLink);
+
+                // Увеличиваем счётчик приглашённых друзей, но не более 10
+                if (task.friendsInvited < task.maxInvites) {
+                    task.friendsInvited += 1;
+                    // Обновляем отображение
+                    renderTasks();
+
+                    // Проверяем, достигнуто ли максимальное количество
+                    if (task.friendsInvited >= task.maxInvites) {
+                        task.completed = true;
+                        alert('You have invited the maximum number of friends!');
+                        // Обновляем переменные $DUCKS и HOT на основе награды
+                        updateRewards(task.reward);
+                        updateAmounts();
+                    }
+
+                } else {
+                    alert('You have already invited the maximum number of friends!');
+                }
+
+                return; // Возвращаемся, чтобы не помечать задачу как выполненную преждевременно
+            }
+
+            // Помечаем задачу как выполненную
+            task.completed = true;
+            // Обновляем переменные $DUCKS и HOT на основе награды
+            updateRewards(task.reward);
+
+            // Перерисовываем задачи
+            renderTasks();
+            // Обновляем отображаемые суммы
+            updateAmounts();
+        }
+
+        // Функция для обновления переменных $DUCKS и HOT
+        function updateRewards(rewardText) {
+            var ducksMatch = rewardText.match(/\+(\d+)\s\$DUCKS/);
+            var hotsMatch = rewardText.match(/\+(\d+)\sHOT/);
+
+            if (ducksMatch) {
+                ducksAmount += parseInt(ducksMatch[1]);
+            }
+            if (hotsMatch) {
+                hotsAmount += parseInt(hotsMatch[1]);
+            }
+        }
+
+        // Функция для обновления отображаемых сумм
+        function updateAmounts() {
+            document.getElementById('ducks-amount').textContent = ducksAmount;
+            document.getElementById('hots-available').textContent = hotsAmount;
+        }
+
+        // Функция для переключения дополнительных задач
+        function toggleMoreTasks() {
+            moreTasksShown = !moreTasksShown;
+            renderTasks();
+
+            // Обновляем текст и иконку
+            var showMoreText = document.getElementById('show-more-text');
+            var showMoreIcon = document.getElementById('show-more-icon');
+            if (moreTasksShown) {
+                showMoreText.textContent = 'Show less tasks';
+                showMoreIcon.textContent = '-';
+            } else {
+                showMoreText.textContent = 'Show more tasks';
+                showMoreIcon.textContent = '+';
+            }
+        }
+
+        // Функция для переключения вкладок
+        function showTab(tabId) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('get-hots').style.display = 'none';
+            document.getElementById('leaderboard').style.display = 'none';
+
+            document.getElementById(tabId).style.display = 'block';
+
+            // Обновляем активный пункт меню
+            var navItems = document.querySelectorAll('.nav a');
+            navItems.forEach(function(nav) {
+                nav.classList.remove('active');
+            });
+
+            if (tabId === 'home') {
+                updateNavActive('nav-home');
+            } else if (tabId === 'leaderboard') {
+   updateNavActive('nav-leaderboard');
+            } else if (tabId === 'get-hots') {
+                updateNavActive('nav-get-hots');
+            }
+        }
+
+        function updateNavActive(navId) {
+            var navItem = document.getElementById(navId);
+            navItem.classList.add('active');
+        }
+
+        // Функция для подключения кошелька (пример)
+        function connectWallet() {
+            alert('Connecting wallet...');
+            // Логика подключения кошелька
+
+            // Для примера пометим задачу "Connect Hot Wallet" как выполненную
+            var connectWalletTask = tasks.find(task => task.title === "Connect Hot Wallet");
+            if (connectWalletTask && !connectWalletTask.completed) {
+                connectWalletTask.completed = true;
+                updateRewards(connectWalletTask.reward);
+                updateAmounts();
+                renderTasks();
+                alert('Wallet connected! You received ' + connectWalletTask.reward);
+            }
+        }
+
+        // Функция для переключения ответа в FAQ
+        function toggleFaqAnswer(element) {
+            var faqItem = element.parentElement;
+            var faqAnswer = faqItem.querySelector('.faq-answer');
+            var faqIcon = element.querySelector('.faq-icon');
+
+            if (faqAnswer.style.display === 'none' || faqAnswer.style.display === '') {
+                faqAnswer.style.display = 'block';
+                faqIcon.textContent = '-';
+            } else {
+                faqAnswer.style.display = 'none';
+                faqIcon.textContent = '+';
+            }
+        }
+
+        // Инициализируем отображение задач и сумм
+        renderTasks();
+        updateAmounts();
+
+    </script>
+
+</body>
+</html>
